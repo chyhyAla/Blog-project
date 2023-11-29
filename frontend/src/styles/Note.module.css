@@ -1,0 +1,28 @@
+.noteCard {
+  background-color: rgb(254, 238, 171);
+  cursor: pointer;
+}
+.noteText {
+  white-space: pre-line;
+}
+.cardBody {
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+.note {
+  height: 200px;
+  min-width: 150px;
+  transition: box-shadow 0.1s ease-in-out;
+}
+.note:hover {
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
+}
+.notesPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.notesGrid {
+  width: 100%;
+}
