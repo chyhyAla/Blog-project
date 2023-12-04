@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import userModel from "../models/user";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
