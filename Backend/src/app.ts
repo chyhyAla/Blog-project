@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import notesRoutes from "./routes/notes";
-import usersRoutes from "./routes//users";
+import usersRoutes from "./routes/users";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
@@ -11,10 +11,16 @@ import cors from "cors";
 
 const app = express();
 
-app.use(cors);
+const corsOptions = {
+  origin: "https://notes-otv2.onrender.com",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // enable set cookie
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
-
 app.use(express.json());
 
 app.use(
