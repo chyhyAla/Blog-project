@@ -43,9 +43,9 @@ app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
 
-app.use((req, res, next) => {
-  next(createHttpError(404, "Endpoint not found"));
-});
+// app.use((req, res, next) => {
+//   next(createHttpError(404, "Endpoint not found"));
+// });
 
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   console.log(error);
