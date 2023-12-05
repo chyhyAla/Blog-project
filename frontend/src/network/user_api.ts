@@ -1,7 +1,6 @@
 import { User } from "../models/user";
 
-const baseUrl = "https://notini-app.azurewebsites.net"; // Update with your Azure frontend URL
-
+const baseUrl = "https://notes-app-api-m6rv.onrender.com";
 async function fetchData(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(`${baseUrl}${input}`, init);
 

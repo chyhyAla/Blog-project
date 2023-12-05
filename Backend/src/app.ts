@@ -38,20 +38,17 @@ app.use(
     }),
   })
 );
-
-// Add a log for static file serving
 app.use("/", express.static(path.join(__dirname, "public")));
+
 app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
 
-// Add logs for route not found and error handling
 app.use((req, res, next) => {
-  console.log(`Received request for ${req.method} ${req.url}`);
-  next();
+  next(createHttpError(404, "Endpoint not found"));
 });
 
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-  console.error("Error handling middleware:", error);
+  console.log(error);
   let errorMessage = "An unknown error occurred";
   let statusCode = 500;
   if (isHttpError(error)) {
