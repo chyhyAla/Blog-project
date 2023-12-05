@@ -8,6 +8,7 @@ import session from "express-session";
 import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(
     }),
   })
 );
+app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
