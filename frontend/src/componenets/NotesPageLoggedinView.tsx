@@ -29,6 +29,7 @@ const NotesPageLoggedinView = () => {
        console.log(notes);
       setNotes(notes);
     } catch (error) {
+      console.log("hello...")
       console.log(error)
       setNotesLoading(false)
     }finally{
