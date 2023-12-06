@@ -27,7 +27,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
     return data;
   } catch (error) {
     console.error("Error parsing response:", error);
-    console.error("Raw response:", await response.text());
+    console.error("Raw response:", response);
     throw Error("Failed to parse response");
   }
 }

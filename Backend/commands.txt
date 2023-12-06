@@ -1,0 +1,2 @@
+"prestart": "chmod +x node_modules/.bin/ts-node",
+"start": " npx ts-node src/server.ts",
