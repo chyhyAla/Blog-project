@@ -11,7 +11,7 @@
     "build": "tsc"
   },
   "keywords": [],
-  "author": "Your Name",
+  "author": "Ala",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
