@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button, Col, Row, Spinner } from 'react-bootstrap';
 import { FaPlus } from "react-icons/fa";
 import { Note as noteModel } from '../models/note';
-import * as notesApi from '../network/notes_api1';
+import * as notesApi from '../network/notes_api';
 import AddEditnoteForm from "./AddEditnoteForm";
 import Note from "./note";
 import styles from '../styles/Note.module.css';

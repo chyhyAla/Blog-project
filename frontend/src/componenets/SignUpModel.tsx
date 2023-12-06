@@ -1,8 +1,8 @@
 import {  useForm } from "react-hook-form"
 import { User } from "../models/user"
-import { SignUpCredentials } from "../network/user_api"
-import * as NotesApi from "../network/user_api"
-import { Alert, Button, Form, Modal, ModalBody } from "react-bootstrap"
+import { SignUpCredentials } from "../network/notes_api"
+import * as NotesApi from "../network/notes_api"
+import { Alert, Button, Form, Modal } from "react-bootstrap"
 import TextInputField from "./form/TextInputField"
 import styleUtils from "../styles/utils.module.css"
 import { useState } from "react"
@@ -22,7 +22,7 @@ export default function SignUpModel({onDismiss , onSignUpSuccessful}: SignUpProp
 
     async function onSubmit(credentials: SignUpCredentials) {
         try {
-            const newUser = await NotesApi.Signup(credentials);
+            const newUser = await NotesApi.signUp(credentials);
             onSignUpSuccessful(newUser);
             
         } catch (error) {

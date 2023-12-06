@@ -5,7 +5,7 @@ import SignUpModel from './componenets/SignUpModel';
 
 import { useEffect, useState } from 'react';
 import { User } from './models/user';
-import * as UserApi from "./network/user_api";
+import * as UserApi from "./network/notes_api";
 import { BrowserRouter, Routes , Route} from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import NotesPage from './pages/NotesPage';
@@ -24,7 +24,7 @@ function App() {
   useEffect(() =>{
     async function fetchLoggedInUser() {
       try {
-        const user = await UserApi.getLogeedInUser();
+        const user = await UserApi.getLoggedInUser();
         setLoggedInUser(user)
       } catch (error) {
         console.error(error)

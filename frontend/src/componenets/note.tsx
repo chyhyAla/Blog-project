@@ -4,7 +4,6 @@ import { Card } from "react-bootstrap";
 import { formatDate } from "../utils/formatDate";
 import {MdDelete } from 'react-icons/md'
 import stylesUtils from '../styles/utils.module.css'
-import { cursorTo } from "readline";
 
 interface NoteProps {
     note : noteModel,
