@@ -2,10 +2,11 @@ import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { Note } from "../models/note";
 import { User } from "../models/user";
 
-const baseurl = "https://notes-app-api-m6rv.onrender.com";
-
 async function fetchData(input: RequestInfo, init?: RequestInit) {
-  const response = await fetch(`${baseurl}${input}`, init);
+  const response = await fetch(
+    `https://notes-app-api-m6rv.onrender.com${input}`,
+    init
+  );
   if (response.ok) {
     return response;
   } else {
