@@ -2,11 +2,10 @@ import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { Note } from "../models/note";
 import { User } from "../models/user";
 
+const baseUrl = "https://notes-app-api-m6rv.onrender.com";
+
 async function fetchData(input: RequestInfo, init?: RequestInit) {
-  const response = await fetch(
-    `https://notes-app-api-m6rv.onrender.com${input}`,
-    init
-  );
+  const response = await fetch(input, init);
   if (response.ok) {
     return response;
   } else {
@@ -28,7 +27,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 }
 
 export async function getLoggedInUser(): Promise<User> {
-  const response = await fetchData("/api/users", { method: "GET" });
+  const response = await fetchData(`${baseUrl}/api/users`, { method: "GET" });
   return response.json();
 }
 
@@ -39,7 +38,7 @@ export interface SignUpCredentials {
 }
 
 export async function signUp(credentials: SignUpCredentials): Promise<User> {
-  const response = await fetchData("/api/users/signup", {
+  const response = await fetchData(`${baseUrl}/api/users/signup"`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,7 +69,7 @@ export async function logout() {
 }
 
 export async function fetchNotes(): Promise<Note[]> {
-  const response = await fetchData("/api/notes", {
+  const response = await fetchData(`${baseUrl}/api/notes`, {
     method: "GET",
     credentials: "include",
   });
