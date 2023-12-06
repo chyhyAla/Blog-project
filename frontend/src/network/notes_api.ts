@@ -69,7 +69,10 @@ export async function logout() {
 }
 
 export async function fetchNotes(): Promise<Note[]> {
-  const response = await fetchData("/api/notes", { method: "GET" });
+  const response = await fetchData("/api/notes", {
+    method: "GET",
+    credentials: "include",
+  });
   return response.json();
 }
 

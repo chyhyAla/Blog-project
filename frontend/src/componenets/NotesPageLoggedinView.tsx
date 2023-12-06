@@ -26,6 +26,7 @@ const NotesPageLoggedinView = () => {
         setShowNotesLoadingError(false);
         setNotesLoading(true);
        const notes = await notesApi.fetchNotes() 
+       console.log(notes);
       setNotes(notes);
     } catch (error) {
       console.log(error)
