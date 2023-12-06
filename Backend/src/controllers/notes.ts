@@ -68,6 +68,7 @@ export const createNote: RequestHandler<
 
     res.status(201).json(newNote);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
