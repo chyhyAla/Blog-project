@@ -39,7 +39,7 @@ app.use(
     // Ensure that credentials are sent with cross-origin requests
   })
 );
-app.use("/", express.static(path.join(__dirname, "public")));
+// app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
