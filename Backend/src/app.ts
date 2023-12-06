@@ -38,10 +38,13 @@ app.use(
     }),
   })
 );
-app.use("/", express.static(path.join(__dirname, "public")));
+app.use(
+  "https://notes-app-api-m6rv.onrender.com/",
+  express.static(path.join(__dirname, "public"))
+);
 
-app.use("/api/notes", notesRoutes);
-app.use("/api/users", usersRoutes);
+app.use("https://notes-app-api-m6rv.onrender.com/api/notes", notesRoutes);
+app.use("https://notes-app-api-m6rv.onrender.com/api/users", usersRoutes);
 
 // app.all("*", (req, res) => {
 //   res.status(404);
