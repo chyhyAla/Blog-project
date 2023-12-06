@@ -4,8 +4,8 @@ import { User } from "../models/user";
 
 const baseUrl = "https://notes-app-api-m6rv.onrender.com";
 
-async function fetchData(input: RequestInfo, init?: RequestInit) {
-  const response = await fetch(input, init);
+async function fetchData(url: string, init?: RequestInit) {
+  const response = await fetch(url, init);
   if (response.ok) {
     return response;
   } else {
@@ -38,7 +38,7 @@ export interface SignUpCredentials {
 }
 
 export async function signUp(credentials: SignUpCredentials): Promise<User> {
-  const response = await fetchData(`${baseUrl}/api/users/signup"`, {
+  const response = await fetchData(`${baseUrl}/api/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-  const response = await fetchData("/api/users/login", {
+  const response = await fetchData(`${baseUrl}/api/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 }
 
 export async function logout() {
-  await fetchData("/api/users/logout", { method: "POST" });
+  await fetchData(`${baseUrl}/api/users/logout`, { method: "POST" });
 }
 
 export async function fetchNotes(): Promise<Note[]> {
@@ -82,7 +82,7 @@ export interface NoteInput {
 }
 
 export async function createNote(note: NoteInput): Promise<Note> {
-  const response = await fetchData("/api/notes", {
+  const response = await fetchData(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export async function updateNote(
   noteId: string,
   note: NoteInput
 ): Promise<Note> {
-  const response = await fetchData("/api/notes/" + noteId, {
+  const response = await fetchData(`${baseUrl}/api/notes/${noteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -107,5 +107,5 @@ export async function updateNote(
 }
 
 export async function deleteNote(noteId: string) {
-  await fetchData("/api/notes/" + noteId, { method: "DELETE" });
+  await fetchData(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" });
 }
