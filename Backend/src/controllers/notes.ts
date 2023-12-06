@@ -55,7 +55,7 @@ export const createNote: RequestHandler<
   const authenticatedUserId = req.session.userId;
 
   try {
-    // assertIsDefined(authenticatedUserId);
+    assertIsDefined(authenticatedUserId);
     if (!title) {
       throw createHttpError(400, "Note must have a title ");
     }
