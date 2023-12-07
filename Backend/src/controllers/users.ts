@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.session.userId;
+    console.log(userId);
     const user = await userModel.findById(userId).select("+email").exec();
 
     res.status(200).json(user);
@@ -104,7 +105,11 @@ export const Login: RequestHandler<
     if (!passwordMatch) {
       throw createHttpError(401, "Invalid credentiels");
     }
+
     req.session.userId = user._id;
+    const authenticatedUserId = req.session.userId;
+    console.log("Authenticated User ID:", authenticatedUserId);
+
     res.status(200).json(user);
   } catch (error) {
     next(error);
