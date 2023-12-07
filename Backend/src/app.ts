@@ -8,7 +8,6 @@ import session from "express-session";
 import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-import path from "path";
 
 const app = express();
 
