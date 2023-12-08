@@ -9,7 +9,13 @@ async function fetchData(url: string, init?: RequestInit) {
     const response = await fetch(url, init);
 
     if (response.ok) {
-      return response.json();
+      // Check if the content-type is JSON before trying to parse
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return response.json();
+      } else {
+        throw new Error("Response is not in JSON format");
+      }
     } else {
       const errorBody = await response.json();
       const errorMessage = errorBody.error || "Unknown error";
