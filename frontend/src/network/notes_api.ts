@@ -74,6 +74,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 
   // console.log("test");
   const user = await response.json();
+  console.log(user);
   return user;
 }
 
