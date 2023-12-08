@@ -6,7 +6,7 @@ import { assertIsDefined } from "../utils/assertIsDefined";
 
 export const getAllnotes: RequestHandler = async (req, res, next) => {
   const authenticatedUserId = req.session.userId;
-  console.log("Authenticated User ID:", authenticatedUserId);
+  console.log("Authenticated User ID 1 :", authenticatedUserId);
 
   try {
     const result = assertIsDefined(authenticatedUserId);
