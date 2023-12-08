@@ -42,8 +42,8 @@ app.use(
 );
 // app.use("/", express.static(path.join(__dirname, "public")));
 
-app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/notes", notesRoutes);
 
 // app.all("*", (req, res) => {
 //   res.status(404);
