@@ -123,7 +123,7 @@ export const Login: RequestHandler<
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID:", authenticatedUserId);
+    console.log("Authenticated User ID from login :", authenticatedUserId);
 
     res.status(200).json(user);
   } catch (error) {

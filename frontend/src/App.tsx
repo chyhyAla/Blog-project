@@ -25,6 +25,7 @@ function App() {
     async function fetchLoggedInUser() {
       try {
         const user = await UserApi.getLoggedInUser();
+        console.log(user + "from App.tsx")
         setLoggedInUser(user)
         console.log(loggedInUser);
       } catch (error) {
