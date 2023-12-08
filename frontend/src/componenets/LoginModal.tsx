@@ -21,7 +21,7 @@ export const LoginModal = ({onDismiss , onLoginSuccessful}: LoginModalProps) => 
     async function onSubmit(credentials:LoginCredentials) {
         try {
             const user = await UserApi.login(credentials);
-            console.log(user + " from login modal")
+            console.log(user.username + " from login modal")
             onLoginSuccessful(user)
         } catch (error) {
             if(error instanceof UnauthorizedError){
