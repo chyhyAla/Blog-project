@@ -13,9 +13,9 @@ import { requireAuth } from "./middleware/Auth";
 const app = express();
 
 const corsOptions = {
-  origin: "https://notes-otv2.onrender.com",
+  origin: ["https://notes-otv2.onrender.com", "http://localhost:3000"], // Add your frontend origin
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // enable set cookie
+  credentials: true,
   optionsSuccessStatus: 204,
 };
 
