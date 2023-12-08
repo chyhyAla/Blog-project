@@ -61,8 +61,8 @@ export async function login(credentials: LoginCredentials): Promise<User> {
     },
     body: JSON.stringify(credentials),
   });
-  console.log(response);
-  console.log(response.text);
+  // console.log(response);
+  // console.log(response.text);
   console.log(response.json());
   console.log("test");
   return response.json();
