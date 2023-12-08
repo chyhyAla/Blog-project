@@ -77,7 +77,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
     console.log("Response headers:", response.headers);
 
     console.log("test");
-    return response.json();
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     throw new Error("Failed to log in");
