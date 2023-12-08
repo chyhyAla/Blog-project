@@ -7,8 +7,16 @@ import mongoose from "mongoose";
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.session.userId;
-    console.log(userId);
+
+    if (!userId) {
+      throw createHttpError(401, "User not authenticated");
+    }
+
     const user = await userModel.findById(userId).select("+email").exec();
+
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
 
     res.status(200).json(user);
   } catch (error) {
