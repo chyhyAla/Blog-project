@@ -73,7 +73,8 @@ export async function login(credentials: LoginCredentials): Promise<User> {
   });
 
   // console.log("test");
-  return response.json();
+  const user = await response.json();
+  return user;
 }
 
 export async function logout() {
