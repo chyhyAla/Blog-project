@@ -26,12 +26,13 @@ function App() {
       try {
         const user = await UserApi.getLoggedInUser();
         setLoggedInUser(user)
+        console.log(loggedInUser);
       } catch (error) {
         console.error(error)
       }
     }
     fetchLoggedInUser()
-  }, [])
+  }, [loggedInUser])
 
 
   

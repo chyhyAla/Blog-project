@@ -23,7 +23,7 @@ export default function SignUpModel({onDismiss , onSignUpSuccessful}: SignUpProp
     async function onSubmit(credentials: SignUpCredentials) {
         try {
             const newUser = await NotesApi.signUp(credentials);
-            console.log(newUser);
+            console.log(newUser);   
             onSignUpSuccessful(newUser);
             
         } catch (error) {
