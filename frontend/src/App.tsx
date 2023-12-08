@@ -22,17 +22,20 @@ function App() {
   const [showLoginModal , setShowLoginModal] = useState(false)
 
   useEffect(() =>{
-    async function fetchLoggedInUser() {
+    if (!loggedInUser && document.cookie.includes("connect.sid")) {
+    const fetchLoggedInUser = async () => {
       try {
         const user = await UserApi.getLoggedInUser();
-        console.log(user + "from App.tsx")
-        setLoggedInUser(user)
+        console.log(user + "from App.tsx");
+        setLoggedInUser(user);
         console.log(loggedInUser);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
-    fetchLoggedInUser()
+    };
+
+    fetchLoggedInUser();
+  }
   }, [loggedInUser])
 
 
