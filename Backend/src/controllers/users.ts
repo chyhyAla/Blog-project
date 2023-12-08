@@ -115,7 +115,15 @@ export const Login: RequestHandler<
       throw createHttpError(401, "Invalid credentials");
     }
 
+    // Set the session cookie
     req.session.userId = user._id;
+
+    res.cookie("yourCookieName", req.sessionID, {
+      httpOnly: true,
+      secure: true, // set to true if using HTTPS
+      sameSite: "none", // set to 'none' for cross-site requests
+    });
+
     const authenticatedUserId = req.session.userId;
 
     if (!authenticatedUserId) {
@@ -123,7 +131,7 @@ export const Login: RequestHandler<
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID from login :", authenticatedUserId);
+    console.log("Authenticated User ID from login:", authenticatedUserId);
     console.log("Session after login:", req.session);
 
     res.status(200).json(user);
@@ -132,7 +140,6 @@ export const Login: RequestHandler<
     next(error);
   }
 };
-
 export const Logout: RequestHandler = async (req, res, next) => {
   req.session.destroy((error) => {
     if (error) {
