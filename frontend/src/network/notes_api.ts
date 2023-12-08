@@ -5,24 +5,28 @@ import { User } from "../models/user";
 const baseUrl = "https://notes-app-api-m6rv.onrender.com";
 
 async function fetchData(url: string, init?: RequestInit) {
-  const response = await fetch(url, init);
-  if (response.ok) {
-    return response;
-  } else {
-    const errorBody = await response.json();
-    const errorMessage = errorBody.error;
-    if (response.status === 401) {
-      throw new UnauthorizedError(errorMessage);
-    } else if (response.status === 409) {
-      throw new ConflictError(errorMessage);
+  try {
+    const response = await fetch(url, init);
+
+    if (response.ok) {
+      return response.json();
     } else {
-      throw Error(
-        "Request failed with status: " +
-          response.status +
-          " message: " +
-          errorMessage
-      );
+      const errorBody = await response.json();
+      const errorMessage = errorBody.error || "Unknown error";
+
+      if (response.status === 401) {
+        throw new UnauthorizedError(errorMessage);
+      } else if (response.status === 409) {
+        throw new ConflictError(errorMessage);
+      } else {
+        throw new Error(
+          `Request failed with status: ${response.status}, message: ${errorMessage}`
+        );
+      }
     }
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw new Error("Failed to fetch data");
   }
 }
 
