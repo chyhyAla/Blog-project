@@ -124,6 +124,7 @@ export const Login: RequestHandler<
     }
 
     console.log("Authenticated User ID from login :", authenticatedUserId);
+    console.log("Session after login:", req.session);
 
     res.status(200).json(user);
   } catch (error) {
