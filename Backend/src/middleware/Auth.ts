@@ -3,7 +3,8 @@ import createHttpError from "http-errors";
 
 // In your Auth middleware
 export const requireAuth: RequestHandler = (req, res, next) => {
-  if (req.session.userId) {
+  const user = req.session.userId;
+  if (user) {
     console.log("User is authenticated. UserId:", req.session.userId);
     next();
   } else {
