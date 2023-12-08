@@ -63,7 +63,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
   });
   // console.log(response);
   // console.log(response.text);
-  console.log(response.json());
+  // console.log(response.json());
   console.log("test");
   return response.json();
 }
