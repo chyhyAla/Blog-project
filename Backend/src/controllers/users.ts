@@ -106,20 +106,28 @@ export const Login: RequestHandler<
       .exec();
 
     if (!user) {
-      throw createHttpError(401, "Invalid credentiels");
+      throw createHttpError(401, "Invalid credentials");
     }
+
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw createHttpError(401, "Invalid credentiels");
+      throw createHttpError(401, "Invalid credentials");
     }
 
     req.session.userId = user._id;
     const authenticatedUserId = req.session.userId;
+
+    if (!authenticatedUserId) {
+      console.error("UserId not set in session:", req.session);
+      throw createHttpError(500, "UserId not set in session");
+    }
+
     console.log("Authenticated User ID:", authenticatedUserId);
 
     res.status(200).json(user);
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
