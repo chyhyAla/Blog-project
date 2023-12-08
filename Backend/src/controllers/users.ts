@@ -118,12 +118,6 @@ export const Login: RequestHandler<
     // Set the session cookie
     req.session.userId = user._id;
 
-    res.cookie("yourCookieName", req.sessionID, {
-      httpOnly: true,
-      secure: true, // set to true if using HTTPS
-      sameSite: "none", // set to 'none' for cross-site requests
-    });
-
     const authenticatedUserId = req.session.userId;
 
     if (!authenticatedUserId) {
