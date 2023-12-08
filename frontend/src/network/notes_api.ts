@@ -64,24 +64,16 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-  try {
-    const response = await fetchData(`${baseUrl}/api/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
+  const response = await fetchData(`${baseUrl}/api/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
 
-    console.log("Raw response:", response);
-    console.log("Response headers:", response.headers);
-
-    console.log("test");
-    return response.json();
-  } catch (error) {
-    console.error("Login error:", error);
-    throw new Error("Failed to log in");
-  }
+  // console.log("test");
+  return response.json();
 }
 
 export async function logout() {

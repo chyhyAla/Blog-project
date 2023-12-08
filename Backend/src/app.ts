@@ -8,6 +8,7 @@ import session from "express-session";
 import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import cors from "cors";
+import { requireAuth } from "./middleware/Auth";
 
 const app = express();
 
@@ -43,7 +44,7 @@ app.use(
 // app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/api/users", usersRoutes);
-app.use("/api/notes", notesRoutes);
+app.use("/api/notes", requireAuth, notesRoutes);
 
 // app.all("*", (req, res) => {
 //   res.status(404);
