@@ -3,7 +3,6 @@ import createHttpError from "http-errors";
 import userModel from "../models/user";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-import { Session } from "express-session";
 declare module "express-session" {
   interface SessionData {
     userId?: mongoose.Types.ObjectId;
@@ -12,12 +11,8 @@ declare module "express-session" {
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    var session;
-    session = req.session;
-    session.userId = req.session.userId;
-    const authenticatedUserId = session.userId;
+    const authenticatedUserId = req.session.userId;
     console.log(authenticatedUserId);
-    console.log(session);
     console.log(req.session);
 
     if (!authenticatedUserId) {
@@ -86,6 +81,7 @@ export const SignUp: RequestHandler<
     });
 
     req.session.userId = newUser._id;
+    console.log(req.session);
 
     res.status(200).json(newUser);
   } catch (error) {
