@@ -43,7 +43,7 @@ app.use(
   })
 );
 // app.use("/", express.static(path.join(__dirname, "public")));
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use("/api/users", usersRoutes);
 app.use("/api/notes", requireAuth, notesRoutes);
