@@ -9,6 +9,8 @@ declare module "express-session" {
   }
 }
 
+var sessionStorage;
+
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const authenticatedUserId = req.session.userId;
@@ -132,8 +134,11 @@ export const Login: RequestHandler<
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID from login:", authenticatedUserId);
-    console.log("Session after login:", req.session);
+    // console.log("Authenticated User ID from login:", authenticatedUserId);
+    // console.log("Session after login:", req.session);
+
+    sessionStorage = req.session;
+    console.log(sessionStorage);
 
     res.status(200).json(user);
   } catch (error) {
