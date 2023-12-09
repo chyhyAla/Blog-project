@@ -3,10 +3,13 @@ import createHttpError from "http-errors";
 import userModel from "../models/user";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import { Session } from "express-session";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.session.userId;
+    console.log(userId);
+    console.log(Session);
 
     if (!userId) {
       throw createHttpError(401, "User not authenticated");
