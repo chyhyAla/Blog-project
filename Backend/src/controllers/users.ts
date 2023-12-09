@@ -17,7 +17,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     session.userId = req.session.userId;
     const authenticatedUserId = session.userId;
     console.log(authenticatedUserId);
-    console.log(Session);
+    console.log(session);
     console.log(req.session);
 
     if (!authenticatedUserId) {
