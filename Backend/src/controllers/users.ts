@@ -4,6 +4,11 @@ import userModel from "../models/user";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { Session } from "express-session";
+declare module "express-session" {
+  interface SessionData {
+    userId?: mongoose.Types.ObjectId;
+  }
+}
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
