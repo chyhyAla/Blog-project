@@ -11,7 +11,7 @@ declare module "express-session" {
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const authenticatedUserId = req.sessionStore.all;
+    const authenticatedUserId = req.signedCookies;
     console.log(authenticatedUserId);
     console.log(req.session);
 
