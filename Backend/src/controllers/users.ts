@@ -12,7 +12,10 @@ declare module "express-session" {
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const authenticatedUserId = req.session.userId;
+    var session;
+    session = req.session;
+    session.userId = req.session.userId;
+    const authenticatedUserId = session.userId;
     console.log(authenticatedUserId);
     console.log(Session);
     console.log(req.session);
