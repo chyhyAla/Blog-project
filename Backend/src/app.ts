@@ -9,7 +9,6 @@ import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import { requireAuth } from "./middleware/Auth";
-import bodyParser from "body-parser";
 
 const app = express();
 
@@ -23,9 +22,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
-
+app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
@@ -45,7 +43,6 @@ app.use(
   })
 );
 // app.use("/", express.static(path.join(__dirname, "public")));
-// app.use(cookieParser());
 
 app.use("/api/users", usersRoutes);
 app.use("/api/notes", requireAuth, notesRoutes);

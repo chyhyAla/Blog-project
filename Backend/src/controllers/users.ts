@@ -11,23 +11,10 @@ declare module "express-session" {
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const authenticatedUserId = req.session.userId?.toJSON;
-    console.log(authenticatedUserId);
-    console.log(req.session);
-
-    if (!authenticatedUserId) {
-      throw createHttpError(401, "User not authenticated");
-    }
-
     const user = await userModel
-      .findById(authenticatedUserId)
+      .findById(req.session.userId)
       .select("+email")
       .exec();
-
-    if (!user) {
-      throw createHttpError(404, "User not found");
-    }
-
     res.status(200).json(user);
   } catch (error) {
     next(error);
