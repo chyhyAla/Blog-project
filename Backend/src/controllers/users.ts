@@ -37,11 +37,7 @@ interface SignUpBody {
   email?: string;
   password?: string;
 }
-declare module "express-session" {
-  interface SessionData {
-    userId?: mongoose.Types.ObjectId;
-  }
-}
+
 export const SignUp: RequestHandler<
   unknown,
   unknown,
