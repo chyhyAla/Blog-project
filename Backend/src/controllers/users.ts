@@ -10,6 +10,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const userId = req.session.userId;
     console.log(userId);
     console.log(Session);
+    console.log(req.session);
 
     if (!userId) {
       throw createHttpError(401, "User not authenticated");
