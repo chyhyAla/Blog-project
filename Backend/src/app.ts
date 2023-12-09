@@ -22,6 +22,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
+
 app.use(express.json());
 
 app.use(
@@ -42,6 +43,7 @@ app.use(
   })
 );
 // app.use("/", express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 app.use("/api/users", usersRoutes);
 app.use("/api/notes", requireAuth, notesRoutes);
@@ -73,3 +75,6 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 });
 
 export default app;
+function cookieParser(): any {
+  throw new Error("Function not implemented.");
+}

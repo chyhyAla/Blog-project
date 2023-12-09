@@ -5,13 +5,13 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 declare module "express-session" {
   interface SessionData {
-    userId?: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
   }
 }
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const authenticatedUserId = req.session.userId;
+    const authenticatedUserId = req.sessionStore.all;
     console.log(authenticatedUserId);
     console.log(req.session);
 
