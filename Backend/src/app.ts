@@ -43,8 +43,17 @@ app.use(
 );
 // app.use("/", express.static(path.join(__dirname, "public")));
 
-app.use("/api/users", usersRoutes);
-app.use("/api/notes", requireAuth, notesRoutes);
+app.use("/api/users", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://notes-otv2.onrender.com");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+app.use("/api/notes", requireAuth, (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://notes-otv2.onrender.com");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 // app.all("*", (req, res) => {
 //   res.status(404);
