@@ -4,41 +4,40 @@ import { User } from "../models/user";
 
 const baseUrl = "https://notes-app-api-m6rv.onrender.com";
 
-async function fetchData(url: string, init?: RequestInit) {
-  try {
-    const response = await fetch(url, init);
-
-    if (response.ok) {
-      // Check if the content-type is JSON before trying to parse
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return response.json();
+function fetchData(url: string, init?: RequestInit) {
+  return fetch(url, init)
+    .then((response) => {
+      if (response.ok) {
+        // Check if the content-type is JSON before trying to parse
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          return response.json();
+        } else {
+          throw new Error("Response is not in JSON format");
+        }
       } else {
-        throw new Error("Response is not in JSON format");
+        return response.json().then((errorBody) => {
+          const errorMessage = errorBody.error || "Unknown error";
+          if (response.status === 401) {
+            throw new UnauthorizedError(errorMessage);
+          } else if (response.status === 409) {
+            throw new ConflictError(errorMessage);
+          } else {
+            throw new Error(
+              `Request failed with status: ${response.status}, message: ${errorMessage}`
+            );
+          }
+        });
       }
-    } else {
-      const errorBody = await response.json();
-      const errorMessage = errorBody.error || "Unknown error";
-
-      if (response.status === 401) {
-        throw new UnauthorizedError(errorMessage);
-      } else if (response.status === 409) {
-        throw new ConflictError(errorMessage);
-      } else {
-        throw new Error(
-          `Request failed with status: ${response.status}, message: ${errorMessage}`
-        );
-      }
-    }
-  } catch (error) {
-    console.error("Fetch error:", error);
-    throw new Error("Failed to fetch data");
-  }
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+      throw new Error("Failed to fetch data");
+    });
 }
 
-export async function getLoggedInUser(): Promise<User> {
-  const response = await fetchData(`${baseUrl}/api/users`, { method: "GET" });
-  return response.json();
+export function getLoggedInUser(): Promise<User> {
+  return fetchData(`${baseUrl}/api/users`, { method: "GET" });
 }
 
 export interface SignUpCredentials {
@@ -47,8 +46,8 @@ export interface SignUpCredentials {
   password: string;
 }
 
-export async function signUp(credentials: SignUpCredentials): Promise<User> {
-  const response = await fetchData(`${baseUrl}/api/users/signup`, {
+export function signUp(credentials: SignUpCredentials): Promise<User> {
+  return fetchData(`${baseUrl}/api/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +55,6 @@ export async function signUp(credentials: SignUpCredentials): Promise<User> {
     body: JSON.stringify(credentials),
     credentials: "include",
   });
-  return response.json();
 }
 
 export interface LoginCredentials {
@@ -64,38 +62,26 @@ export interface LoginCredentials {
   password: string;
 }
 
-export async function login(credentials: LoginCredentials): Promise<User> {
-  try {
-    const response = await fetchData(`${baseUrl}/api/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-      credentials: "include",
-    });
-
-    console.log("Raw response:", response);
-    console.log("Response headers:", response.headers);
-
-    console.log("test");
-    return response;
-  } catch (error) {
-    console.error("Login error:", error);
-    throw new Error("Failed to log in");
-  }
+export function login(credentials: LoginCredentials): Promise<User> {
+  return fetchData(`${baseUrl}/api/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+    credentials: "include",
+  });
 }
 
-export async function logout() {
-  await fetchData(`${baseUrl}/api/users/logout`, { method: "POST" });
+export function logout() {
+  return fetchData(`${baseUrl}/api/users/logout`, { method: "POST" });
 }
 
-export async function fetchNotes(): Promise<Note[]> {
-  const response = await fetchData(`${baseUrl}/api/notes`, {
+export function fetchNotes(): Promise<Note[]> {
+  return fetchData(`${baseUrl}/api/notes`, {
     method: "GET",
     credentials: "include",
   });
-  return response;
 }
 
 export interface NoteInput {
@@ -103,31 +89,26 @@ export interface NoteInput {
   text?: string;
 }
 
-export async function createNote(note: NoteInput): Promise<Note> {
-  const response = await fetchData(`${baseUrl}/api/notes`, {
+export function createNote(note: NoteInput): Promise<Note> {
+  return fetchData(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
   });
-  return response.json();
 }
 
-export async function updateNote(
-  noteId: string,
-  note: NoteInput
-): Promise<Note> {
-  const response = await fetchData(`${baseUrl}/api/notes/${noteId}`, {
+export function updateNote(noteId: string, note: NoteInput): Promise<Note> {
+  return fetchData(`${baseUrl}/api/notes/${noteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
   });
-  return response.json();
 }
 
-export async function deleteNote(noteId: string) {
-  await fetchData(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" });
+export function deleteNote(noteId: string) {
+  return fetchData(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" });
 }
