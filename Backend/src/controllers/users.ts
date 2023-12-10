@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
+    const userId = req.session.userId;
+    console.log(userId);
     const user = await userModel
       .findById(req.session.userId)
       .select("+email")
