@@ -12,7 +12,7 @@ export const getAllnotes: RequestHandler = async (req, res, next) => {
 
     // Set the cookie
     res.cookie("name", "Ala", {
-      domain: "https://notes-otv2.onrender.com",
+      domain: "notes-otv2.onrender.com",
       path: "/",
       secure: true,
     });
