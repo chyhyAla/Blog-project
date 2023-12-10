@@ -95,7 +95,7 @@ export async function fetchNotes(): Promise<Note[]> {
     method: "GET",
     credentials: "include",
   });
-  return response.json();
+  return response;
 }
 
 export interface NoteInput {
