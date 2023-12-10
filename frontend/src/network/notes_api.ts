@@ -4,40 +4,32 @@ import { User } from "../models/user";
 
 const baseUrl = "https://notes-app-api-m6rv.onrender.com";
 
-function fetchData(url: string, init?: RequestInit) {
-  return fetch(url, init)
-    .then((response) => {
-      if (response.ok) {
-        // Check if the content-type is JSON before trying to parse
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          return response.json();
-        } else {
-          throw new Error("Response is not in JSON format");
-        }
+function handleResponse(response: Response) {
+  if (response.ok) {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return response.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
+  } else {
+    return response.json().then((errorBody) => {
+      const errorMessage = errorBody.error || "Unknown error";
+      if (response.status === 401) {
+        throw new UnauthorizedError(errorMessage);
+      } else if (response.status === 409) {
+        throw new ConflictError(errorMessage);
       } else {
-        return response.json().then((errorBody) => {
-          const errorMessage = errorBody.error || "Unknown error";
-          if (response.status === 401) {
-            throw new UnauthorizedError(errorMessage);
-          } else if (response.status === 409) {
-            throw new ConflictError(errorMessage);
-          } else {
-            throw new Error(
-              `Request failed with status: ${response.status}, message: ${errorMessage}`
-            );
-          }
-        });
+        throw new Error(
+          `Request failed with status: ${response.status}, message: ${errorMessage}`
+        );
       }
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-      throw new Error("Failed to fetch data");
     });
+  }
 }
 
 export function getLoggedInUser(): Promise<User> {
-  return fetchData(`${baseUrl}/api/users`, { method: "GET" });
+  return fetch(`${baseUrl}/api/users`, { method: "GET" }).then(handleResponse);
 }
 
 export interface SignUpCredentials {
@@ -47,14 +39,14 @@ export interface SignUpCredentials {
 }
 
 export function signUp(credentials: SignUpCredentials): Promise<User> {
-  return fetchData(`${baseUrl}/api/users/signup`, {
+  return fetch(`${baseUrl}/api/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
     credentials: "include",
-  });
+  }).then(handleResponse);
 }
 
 export interface LoginCredentials {
@@ -63,25 +55,27 @@ export interface LoginCredentials {
 }
 
 export function login(credentials: LoginCredentials): Promise<User> {
-  return fetchData(`${baseUrl}/api/users/login`, {
+  return fetch(`${baseUrl}/api/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
     credentials: "include",
-  });
+  }).then(handleResponse);
 }
 
 export function logout() {
-  return fetchData(`${baseUrl}/api/users/logout`, { method: "POST" });
+  return fetch(`${baseUrl}/api/users/logout`, { method: "POST" }).then(
+    handleResponse
+  );
 }
 
 export function fetchNotes(): Promise<Note[]> {
-  return fetchData(`${baseUrl}/api/notes`, {
+  return fetch(`${baseUrl}/api/notes`, {
     method: "GET",
     credentials: "include",
-  });
+  }).then(handleResponse);
 }
 
 export interface NoteInput {
@@ -90,25 +84,27 @@ export interface NoteInput {
 }
 
 export function createNote(note: NoteInput): Promise<Note> {
-  return fetchData(`${baseUrl}/api/notes`, {
+  return fetch(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
-  });
+  }).then(handleResponse);
 }
 
 export function updateNote(noteId: string, note: NoteInput): Promise<Note> {
-  return fetchData(`${baseUrl}/api/notes/${noteId}`, {
+  return fetch(`${baseUrl}/api/notes/${noteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
-  });
+  }).then(handleResponse);
 }
 
 export function deleteNote(noteId: string) {
-  return fetchData(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" });
+  return fetch(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" }).then(
+    handleResponse
+  );
 }
