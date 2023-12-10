@@ -2,31 +2,34 @@ import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { Note } from "../models/note";
 import { User } from "../models/user";
 
-async function fetchData(input: RequestInfo, init?: RequestInit) {
-  const response = await fetch(input, init);
+const baseUrl = "https://notes-app-api-m6rv.onrender.com";
+
+function handleResponse(response: Response) {
   if (response.ok) {
-    return response;
-  } else {
-    const errorBody = await response.json();
-    const errorMessage = errorBody.error;
-    if (response.status === 401) {
-      throw new UnauthorizedError(errorMessage);
-    } else if (response.status === 409) {
-      throw new ConflictError(errorMessage);
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return response.json();
     } else {
-      throw Error(
-        "Request failed with status: " +
-          response.status +
-          " message: " +
-          errorMessage
-      );
+      throw new Error("Response is not in JSON format");
     }
+  } else {
+    return response.json().then((errorBody) => {
+      const errorMessage = errorBody.error || "Unknown error";
+      if (response.status === 401) {
+        throw new UnauthorizedError(errorMessage);
+      } else if (response.status === 409) {
+        throw new ConflictError(errorMessage);
+      } else {
+        throw new Error(
+          `Request failed with status: ${response.status}, message: ${errorMessage}`
+        );
+      }
+    });
   }
 }
 
-export async function getLoggedInUser(): Promise<User> {
-  const response = await fetchData("/api/users", { method: "GET" });
-  return response.json();
+export function getLoggedInUser(): Promise<User> {
+  return fetch(`${baseUrl}/api/users`, { method: "GET" }).then(handleResponse);
 }
 
 export interface SignUpCredentials {
@@ -35,15 +38,15 @@ export interface SignUpCredentials {
   password: string;
 }
 
-export async function signUp(credentials: SignUpCredentials): Promise<User> {
-  const response = await fetchData("/api/users/signup", {
+export function signUp(credentials: SignUpCredentials): Promise<User> {
+  return fetch(`${baseUrl}/api/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
-  });
-  return response.json();
+    credentials: "include",
+  }).then(handleResponse);
 }
 
 export interface LoginCredentials {
@@ -51,30 +54,28 @@ export interface LoginCredentials {
   password: string;
 }
 
-export async function login(credentials: LoginCredentials): Promise<User> {
-  const response = await fetchData("/api/users/login", {
+export function login(credentials: LoginCredentials): Promise<User> {
+  return fetch(`${baseUrl}/api/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
-  });
-  return response.json();
+    credentials: "include",
+  }).then(handleResponse);
 }
 
-export async function logout() {
-  await fetchData("/api/users/logout", { method: "POST" });
+export function logout() {
+  return fetch(`${baseUrl}/api/users/logout`, { method: "POST" }).then(
+    handleResponse
+  );
 }
 
-export async function fetchNotes(): Promise<Note[]> {
-  const response = await fetchData("/api/notes", {
+export function fetchNotes(): Promise<Note[]> {
+  return fetch(`${baseUrl}/api/notes`, {
     method: "GET",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response.json();
+  }).then(handleResponse);
 }
 
 export interface NoteInput {
@@ -82,31 +83,28 @@ export interface NoteInput {
   text?: string;
 }
 
-export async function createNote(note: NoteInput): Promise<Note> {
-  const response = await fetchData("/api/notes", {
+export function createNote(note: NoteInput): Promise<Note> {
+  return fetch(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
-  });
-  return response.json();
+  }).then(handleResponse);
 }
 
-export async function updateNote(
-  noteId: string,
-  note: NoteInput
-): Promise<Note> {
-  const response = await fetchData("/api/notes/" + noteId, {
+export function updateNote(noteId: string, note: NoteInput): Promise<Note> {
+  return fetch(`${baseUrl}/api/notes/${noteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
-  });
-  return response.json();
+  }).then(handleResponse);
 }
 
-export async function deleteNote(noteId: string) {
-  await fetchData("/api/notes/" + noteId, { method: "DELETE" });
+export function deleteNote(noteId: string) {
+  return fetch(`${baseUrl}/api/notes/${noteId}`, { method: "DELETE" }).then(
+    handleResponse
+  );
 }
