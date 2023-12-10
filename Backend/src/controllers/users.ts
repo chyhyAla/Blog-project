@@ -77,7 +77,7 @@ export const SignUp: RequestHandler<
 
     req.session.userId = newUser._id;
     console.log(req.session);
-    res.send(req.session.cookie);
+    res.json(req.session.cookie);
 
     res.status(200).json(newUser);
   } catch (error) {
