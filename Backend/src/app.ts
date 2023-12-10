@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://notes-otv2.onrender.com",
+    origin: "*",
     credentials: true,
   })
 );
