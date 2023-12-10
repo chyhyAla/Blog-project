@@ -9,9 +9,6 @@ export const getAllnotes: RequestHandler = async (req, res, next) => {
   console.log("Authenticated User ID 1 :", authenticatedUserId);
 
   try {
-    const result = assertIsDefined(authenticatedUserId);
-    console.log("result : " + result);
-
     const notes = await NoteModel.find({ userId: authenticatedUserId }).exec();
     res.status(200).json(notes);
   } catch (error) {
