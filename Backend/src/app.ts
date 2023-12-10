@@ -33,8 +33,7 @@ app.use(
     cookie: {
       maxAge: 60 * 60 * 1000,
       secure: true,
-      sameSite: "lax",
-      domain: "notes-app-api-m6rv.onrender.com",
+      sameSite: "strict",
     },
     rolling: true,
     store: MongoStore.create({
