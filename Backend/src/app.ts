@@ -14,7 +14,7 @@ var cookieParser = require("cookie-parser");
 const app = express();
 
 const corsOptions = {
-  origin: ["https://notes-otv2.onrender.com", "http://localhost:3000"], // Add your frontend origin
+  origin: ["https://notes-otv2.onrender.com"], // Add your frontend origin
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -34,6 +34,7 @@ app.use(
       maxAge: 60 * 60 * 1000,
       secure: true,
       sameSite: "lax",
+      domain: "notes-app-api-m6rv.onrender.com",
     },
     rolling: true,
     store: MongoStore.create({
