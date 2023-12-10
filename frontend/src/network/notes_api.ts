@@ -2,31 +2,34 @@ import { ConflictError, UnauthorizedError } from "../errors/http_errors";
 import { Note } from "../models/note";
 import { User } from "../models/user";
 
-async function fetchData(input: RequestInfo, init?: RequestInit) {
-  const response = await fetch(input, init);
+const baseUrl = "https://notes-app-api-m6rv.onrender.com";
+
+async function handleResponse(response: Response): Promise<any> {
   if (response.ok) {
-    return response;
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    } else {
+      throw new Error("Response is not in JSON format");
+    }
   } else {
     const errorBody = await response.json();
-    const errorMessage = errorBody.error;
+    const errorMessage = errorBody.error || "Unknown error";
     if (response.status === 401) {
       throw new UnauthorizedError(errorMessage);
     } else if (response.status === 409) {
       throw new ConflictError(errorMessage);
     } else {
-      throw Error(
-        "Request failed with status: " +
-          response.status +
-          " message: " +
-          errorMessage
+      throw new Error(
+        `Request failed with status: ${response.status}, message: ${errorMessage}`
       );
     }
   }
 }
 
 export async function getLoggedInUser(): Promise<User> {
-  const response = await fetchData("/api/users", { method: "GET" });
-  return response.json();
+  const response = await fetch(`${baseUrl}/api/users`, { method: "GET" });
+  return handleResponse(response);
 }
 
 export interface SignUpCredentials {
@@ -36,14 +39,15 @@ export interface SignUpCredentials {
 }
 
 export async function signUp(credentials: SignUpCredentials): Promise<User> {
-  const response = await fetchData("/api/users/signup", {
+  const response = await fetch(`${baseUrl}/api/users/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
+    credentials: "include",
   });
-  return response.json();
+  return handleResponse(response);
 }
 
 export interface LoginCredentials {
@@ -52,23 +56,30 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-  const response = await fetchData("/api/users/login", {
+  const response = await fetch(`${baseUrl}/api/users/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
+    credentials: "include",
   });
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function logout() {
-  await fetchData("/api/users/logout", { method: "POST" });
+  const response = await fetch(`${baseUrl}/api/users/logout`, {
+    method: "POST",
+  });
+  return handleResponse(response);
 }
 
 export async function fetchNotes(): Promise<Note[]> {
-  const response = await fetchData("/api/notes", { method: "GET" });
-  return response.json();
+  const response = await fetch(`${baseUrl}/api/notes`, {
+    method: "GET",
+    credentials: "include",
+  });
+  return handleResponse(response);
 }
 
 export interface NoteInput {
@@ -77,30 +88,33 @@ export interface NoteInput {
 }
 
 export async function createNote(note: NoteInput): Promise<Note> {
-  const response = await fetchData("/api/notes", {
+  const response = await fetch(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
   });
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function updateNote(
   noteId: string,
   note: NoteInput
 ): Promise<Note> {
-  const response = await fetchData("/api/notes/" + noteId, {
+  const response = await fetch(`${baseUrl}/api/notes/${noteId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
   });
-  return response.json();
+  return handleResponse(response);
 }
 
 export async function deleteNote(noteId: string) {
-  await fetchData("/api/notes/" + noteId, { method: "DELETE" });
+  const response = await fetch(`${baseUrl}/api/notes/${noteId}`, {
+    method: "DELETE",
+  });
+  return handleResponse(response);
 }
