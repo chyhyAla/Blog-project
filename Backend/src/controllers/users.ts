@@ -77,9 +77,8 @@ export const SignUp: RequestHandler<
 
     req.session.userId = newUser._id;
     console.log(req.session);
-    res.json(req.session.cookie);
 
-    res.status(200).json(newUser);
+    res.status(200).json(req.session.cookie);
   } catch (error) {
     next(error);
     console.log(error);
@@ -130,9 +129,8 @@ export const Login: RequestHandler<
 
     console.log("Authenticated User ID from login:", authenticatedUserId);
     console.log("Session after login:", req.session);
-    res.send(req.session.cookie);
 
-    res.status(201).json(user);
+    res.status(201).json(req.session.cookie);
   } catch (error) {
     console.error(error);
     next(error);
