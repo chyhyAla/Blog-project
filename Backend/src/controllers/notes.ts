@@ -10,13 +10,6 @@ export const getAllnotes: RequestHandler = async (req, res, next) => {
   try {
     const notes = await NoteModel.find({ userId: authenticatedUserId }).exec();
 
-    // Set the cookie
-    res.cookie("name", "Ala", {
-      domain: "notes-otv2.onrender.com",
-      path: "/",
-      secure: true,
-    });
-
     // Send the JSON response
     res.status(200).json(notes);
   } catch (error) {
