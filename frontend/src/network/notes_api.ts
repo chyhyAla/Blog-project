@@ -78,7 +78,7 @@ export async function fetchNotes(): Promise<Note[]> {
   const response = await fetch(`${baseUrl}/api/notes`, {
     method: "GET",
     credentials: "include",
-    headers: { Authorization: "jjsdjvboqslé$34" },
+    headers: { "Content-Type": "application/json" },
   });
   return handleResponse(response);
 }

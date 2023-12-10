@@ -13,26 +13,26 @@ var cookieParser = require("cookie-parser");
 
 const app = express();
 
-const corsOptions = {
-  origin: ["https://notes-otv2.onrender.com"], // Add your frontend origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "https://notes-otv2.onrender.com",
+    credentials: true,
+  })
+);
+app.set("trust proxy", 1);
 
 app.use(morgan("dev"));
 app.use(express.json());
 
 app.use(
   session({
+    name: "Ala",
     secret: env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      secure: true,
+      secure: false,
       sameSite: "none",
       domain: "onrender.com",
     },
@@ -46,11 +46,9 @@ app.use(
 );
 
 // app.use("/", express.static(path.join(__dirname, "public")));
-
+app.use(cookieParser());
 app.use("/api/users", usersRoutes);
 app.use("/api/notes", requireAuth, notesRoutes);
-
-app.use(cookieParser());
 
 // app.all("*", (req, res) => {
 //   res.status(404);
