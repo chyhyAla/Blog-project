@@ -3,13 +3,21 @@ import NoteModel from "../models/note";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { assertIsDefined } from "../utils/assertIsDefined";
-
 export const getAllnotes: RequestHandler = async (req, res, next) => {
   const authenticatedUserId = req.session.userId;
   console.log("Authenticated User ID 1 :", authenticatedUserId);
 
   try {
     const notes = await NoteModel.find({ userId: authenticatedUserId }).exec();
+
+    // Set the cookie
+    res.cookie("name", "Ala", {
+      domain: "https://notes-otv2.onrender.com",
+      path: "/",
+      secure: true,
+    });
+
+    // Send the JSON response
     res.status(200).json(notes);
   } catch (error) {
     next(error);

@@ -9,6 +9,7 @@ import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import cors from "cors";
 import { requireAuth } from "./middleware/Auth";
+var cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -42,6 +43,8 @@ app.use(
     // Ensure that credentials are sent with cross-origin requests
   })
 );
+
+app.use(cookieParser());
 // app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/api/users", usersRoutes);
