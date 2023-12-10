@@ -12,6 +12,8 @@ import { requireAuth } from "./middleware/Auth";
 var cookieParser = require("cookie-parser");
 
 const app = express();
+app.use(morgan("dev"));
+app.use(express.json());
 
 app.use(
   cors({
@@ -20,7 +22,6 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Credentials");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -28,9 +29,6 @@ app.use((req, res, next) => {
   next();
 });
 app.set("trust proxy", 1);
-
-app.use(morgan("dev"));
-app.use(express.json());
 
 app.use(
   session({

@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import session from "express-session";
+
 import createHttpError from "http-errors";
 
 // In your Auth middleware
