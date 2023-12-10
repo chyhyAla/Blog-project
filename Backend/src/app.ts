@@ -45,11 +45,12 @@ app.use(
   })
 );
 
-app.use(cookieParser());
 // app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use("/api/users", usersRoutes);
 app.use("/api/notes", requireAuth, notesRoutes);
+
+app.use(cookieParser());
 
 // app.all("*", (req, res) => {
 //   res.status(404);
