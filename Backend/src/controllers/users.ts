@@ -3,18 +3,34 @@ import createHttpError from "http-errors";
 import userModel from "../models/user";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+
 declare module "express-session" {
   interface SessionData {
     userId: mongoose.Types.ObjectId;
   }
 }
+var session;
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
+    session = req.session;
+    // const authenticatedUserId = req.session.cookie;
+    // console.log(authenticatedUserId);
+    // console.log(req.session);
+    console.log(session);
+    if (!session.userId) {
+      throw createHttpError(401, "User not authenticated");
+    }
+
     const user = await userModel
-      .findById(req.session.userId)
+      .findById(session.userId)
       .select("+email")
       .exec();
+
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
+
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -108,19 +124,22 @@ export const Login: RequestHandler<
     if (!passwordMatch) {
       throw createHttpError(401, "Invalid credentials");
     }
+    session = req.session;
+    session.userId = user._id;
+    console.log(session);
 
     // Set the session cookie
-    req.session.userId = user._id;
+    // req.session.userId = user._id;
 
-    const authenticatedUserId = req.session.userId;
+    // const authenticatedUserId = req.session.userId;
 
-    if (!authenticatedUserId) {
-      console.error("UserId not set in session:", req.session);
-      throw createHttpError(500, "UserId not set in session");
-    }
+    // if (!authenticatedUserId) {
+    //   console.error("UserId not set in session:", req.session);
+    //   throw createHttpError(500, "UserId not set in session");
+    // }
 
-    console.log("Authenticated User ID from login:", authenticatedUserId);
-    console.log("Session after login:", req.session);
+    // console.log("Authenticated User ID from login:", authenticatedUserId);
+    // console.log("Session after login:", req.session);
 
     res.status(200).json(user);
   } catch (error) {
