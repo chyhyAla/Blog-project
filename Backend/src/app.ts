@@ -46,7 +46,6 @@ app.use(
     store: MongoStore.create({
       mongoUrl: env.MONGO_URI,
     }),
-
     // Ensure that credentials are sent with cross-origin requests
   })
 );

@@ -4,9 +4,13 @@ import createHttpError from "http-errors";
 
 // In your Auth middleware
 export const requireAuth: RequestHandler = (req, res, next) => {
+  console.log("Session:", req.session);
+  console.log("Cookies:", req.cookies);
+
   const user = req.session.userId;
 
-  // console.log(req.session);
+  console.log("User:", user);
+
   if (user) {
     console.log("User is authenticated. UserId:", req.session.userId);
     next();
