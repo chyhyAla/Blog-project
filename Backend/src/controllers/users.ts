@@ -138,4 +138,5 @@ export const Logout: RequestHandler = async (req, res, next) => {
       res.sendStatus(200);
     }
   });
+  console.log(req.session);
 };
