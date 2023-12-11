@@ -122,12 +122,16 @@ export const Login: RequestHandler<
     console.log("Authenticated User ID from login:", req.session.userId);
     console.log("Session after login:", req.session);
 
+    // Save the session explicitly
+    req.session.save();
+
     res.status(201).json(user);
   } catch (error) {
     console.error(error);
     next(error);
   }
 };
+
 export const Logout: RequestHandler = async (req, res, next) => {
   console.log(req.session);
   req.session.destroy((error) => {
