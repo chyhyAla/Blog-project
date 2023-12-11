@@ -52,7 +52,7 @@ export const createNote: RequestHandler<
 > = async (req, res, next) => {
   const title = req.body.title;
   const text = req.body.text;
-  const authenticatedUserName = req.session.name;
+  const authenticatedUserName = req.session.userName;
   console.log("Authenticated User ID:", authenticatedUserName);
 
   try {

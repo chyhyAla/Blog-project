@@ -67,6 +67,7 @@ export const SignUp: RequestHandler<
     });
 
     req.session.email = newUser.email;
+    req.session.userName = newUser.username;
     console.log(req.session);
 
     res.status(200).json(newUser);
