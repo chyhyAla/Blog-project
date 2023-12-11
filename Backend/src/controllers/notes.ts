@@ -52,17 +52,17 @@ export const createNote: RequestHandler<
 > = async (req, res, next) => {
   const title = req.body.title;
   const text = req.body.text;
-  const authenticatedUserId = req.session.userId;
-  console.log("Authenticated User ID:", authenticatedUserId);
+  const authenticatedUserName = req.session.name;
+  console.log("Authenticated User ID:", authenticatedUserName);
 
   try {
-    assertIsDefined(authenticatedUserId);
+    // assertIsDefined(authenticatedUserId);
     if (!title) {
       throw createHttpError(400, "Note must have a title ");
     }
 
     const newNote = await NoteModel.create({
-      userId: authenticatedUserId,
+      userName: authenticatedUserName,
       title: title,
       text: text,
     });

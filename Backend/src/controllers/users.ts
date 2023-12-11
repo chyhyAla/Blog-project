@@ -66,7 +66,7 @@ export const SignUp: RequestHandler<
       password: passwordHashed,
     });
 
-    req.session.userId = newUser._id;
+    req.session.email = newUser.email;
     console.log(req.session);
 
     res.status(200).json(newUser);
