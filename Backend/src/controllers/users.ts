@@ -13,7 +13,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
       .findById(userId) // Use the userId directly
       .select("+email")
       .exec();
-    res.status(200).json(user);
+    res.status(200).json(req.session);
   } catch (error) {
     next(error);
   }

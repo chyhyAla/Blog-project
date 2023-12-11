@@ -12,8 +12,8 @@ export const requireAuth: RequestHandler = (req, res, next) => {
 
   console.log("User:", user);
 
-  if (user) {
-    console.log("User is authenticated. UserId:", req.session.userId);
+  if (req.session) {
+    console.log("User is authenticated. UserId:", req.session);
     next();
   } else {
     console.log("User not authenticated");
