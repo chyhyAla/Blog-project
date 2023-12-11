@@ -114,14 +114,12 @@ export const Login: RequestHandler<
     // Set the session cookie
     req.session.userId = user._id;
 
-    const authenticatedUserId = req.session.userId;
-
-    if (!authenticatedUserId) {
+    if (!req.session.userId) {
       console.error("UserId not set in session:", req.session);
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID from login:", authenticatedUserId);
+    console.log("Authenticated User ID from login:", req.session.userId);
     console.log("Session after login:", req.session);
 
     res.status(201).json(user);
