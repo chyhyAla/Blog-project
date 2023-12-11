@@ -6,9 +6,6 @@ import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    // Wait for the session to be populated
-    await new Promise((resolve) => req.session.reload(resolve));
-
     const userId = req.session.userId;
     console.log(userId);
 

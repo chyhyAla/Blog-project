@@ -8,7 +8,7 @@ export const requireAuth: RequestHandler = (req, res, next) => {
   console.log("Session:", req.session);
   console.log("Cookies:", req.cookies);
 
-  const user = req.session.userId;
+  const user = req.cookies.userId;
 
   console.log("User:", user);
 
