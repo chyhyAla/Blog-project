@@ -6,11 +6,11 @@ import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
-    const userId = req.session.userId;
-    console.log(userId);
+    const userName = req.session.userName;
+    console.log(userName);
 
     const user = await userModel
-      .findById(userId) // Use the userId directly
+      .findById(userName) // Use the userId directly
       .select("+email")
       .exec();
     res.status(200).json(req.session);
@@ -110,14 +110,14 @@ export const Login: RequestHandler<
     }
 
     // Set the session cookie
-    req.session.userId = user._id;
+    req.session.userName = user.username;
 
-    if (!req.session.userId) {
+    if (!req.session.userName) {
       console.error("UserId not set in session:", req.session);
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID from login:", req.session.userId);
+    console.log("Authenticated User ID from login:", req.session.userName);
     console.log("Session after login:", req.session);
 
     // Save the session explicitly
