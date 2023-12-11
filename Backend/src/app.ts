@@ -39,7 +39,7 @@ app.use(
     cookie: {
       maxAge: 60 * 60 * 1000,
       secure: true,
-      sameSite: "none",
+      sameSite: "strict",
       domain: "onrender.com",
     },
     rolling: true,
