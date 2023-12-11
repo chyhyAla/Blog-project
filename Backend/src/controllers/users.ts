@@ -6,10 +6,14 @@ import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
+    // Wait for the session to be populated
+    await new Promise((resolve) => req.session.reload(resolve));
+
     const userId = req.session.userId;
     console.log(userId);
+
     const user = await userModel
-      .findById(req.session.userId)
+      .findById(userId) // Use the userId directly
       .select("+email")
       .exec();
     res.status(200).json(user);
@@ -17,6 +21,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
 interface SignUpBody {
   username?: string;
   email?: string;
