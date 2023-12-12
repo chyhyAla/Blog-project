@@ -17,7 +17,7 @@ export const getAllnotes: RequestHandler = async (req, res, next) => {
 };
 
 export const getNote: RequestHandler = async (req, res, next) => {
-  const noteId = req.params.noteId;
+  const noteId = req.params.noteid;
   const authenticatedUserId = req.session.userId;
 
   try {
