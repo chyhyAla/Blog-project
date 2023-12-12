@@ -3,5 +3,6 @@ declare module "express-session" {
   interface SessionData {
     email: String;
     userName: String;
+    userId?: mongoose.Types.ObjectId;
   }
 }
