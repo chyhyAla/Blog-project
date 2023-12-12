@@ -4,15 +4,12 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { assertIsDefined } from "../utils/assertIsDefined";
 export const getAllnotes: RequestHandler = async (req, res, next) => {
-  const authenticatedUserName = req.session.userName;
-  console.log("Authenticated User ID 1 :", authenticatedUserName);
+  const authenticatedUserId = req.session.userId;
 
   try {
-    const notes = await NoteModel.find({
-      userName: authenticatedUserName,
-    }).exec();
+    assertIsDefined(authenticatedUserId);
 
-    // Send the JSON response
+    const notes = await NoteModel.find({ userId: authenticatedUserId }).exec();
     res.status(200).json(notes);
   } catch (error) {
     next(error);
