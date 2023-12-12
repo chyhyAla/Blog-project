@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-import notesRoutes from "./routes/notes";
-import usersRoutes from "./routes/users";
+// import notesRoutes from "./routes/notes";
+// import usersRoutes from "./routes/users";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
@@ -10,6 +10,8 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 import { requireAuth } from "./middleware/Auth";
 var cookieParser = require("cookie-parser");
+import * as UserController from "./controllers/users";
+const router = express.Router();
 
 const app = express();
 app.use(morgan("dev"));
@@ -38,7 +40,7 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      secure: true,
+      secure: false,
       sameSite: "strict",
       domain: "onrender.com",
     },
@@ -52,8 +54,15 @@ app.use(
 
 // app.use("/", express.static(path.join(__dirname, "public")));
 // app.use(cookieParser());
-app.use("/api/users", usersRoutes);
-app.use("/api/notes", requireAuth, notesRoutes);
+// app.use("/api/users", usersRoutes);
+// app.use("/api/notes", requireAuth, notesRoutes);
+
+router.post("/signup", UserController.SignUp);
+
+router.post("/login", UserController.Login);
+router.get("/", requireAuth, UserController.getAuthenticatedUser);
+
+router.post("/logout", UserController.Logout);
 
 // app.all("*", (req, res) => {
 //   res.status(404);
