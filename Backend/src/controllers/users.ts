@@ -10,7 +10,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     console.log(userName);
 
     const user = await userModel
-      .findById(userName) // Use the userId directly
+      .findOne({ username: userName }) // Use the userId directly
       .select("+email")
       .exec();
     res.status(200).json(req.session);
