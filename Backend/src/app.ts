@@ -55,11 +55,11 @@ app.use(
 // app.use("/", express.static(path.join(__dirname, "public")));
 // app.use(cookieParser());
 // app.use("/api/users", usersRoutes);
+app.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
 
 app.post("/api/users/signup", UserController.SignUp);
 
 app.post("/api/users/login", UserController.Login);
-app.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
 app.use("/api/notes", requireAuth, notesRoutes);
 
 app.post("api/users/logout", UserController.Logout);

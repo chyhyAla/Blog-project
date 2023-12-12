@@ -116,6 +116,7 @@ export async function updateNote(
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
+    credentials: "include",
   });
   return handleResponse(response);
 }
@@ -123,6 +124,7 @@ export async function updateNote(
 export async function deleteNote(noteId: string) {
   const response = await fetch(`${baseUrl}/api/notes/${noteId}`, {
     method: "DELETE",
+    credentials: "include",
   });
   return handleResponse(response);
 }
