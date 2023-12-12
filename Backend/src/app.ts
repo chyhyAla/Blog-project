@@ -57,12 +57,12 @@ app.use(
 // app.use("/api/users", usersRoutes);
 // app.use("/api/notes", requireAuth, notesRoutes);
 
-router.post("/api/users/signup", UserController.SignUp);
+app.post("/api/users/signup", UserController.SignUp);
 
-router.post("/api/users/login", UserController.Login);
-router.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
+app.post("/api/users/login", UserController.Login);
+app.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
 
-router.post("api/users/logout", UserController.Logout);
+app.post("api/users/logout", UserController.Logout);
 
 // app.all("*", (req, res) => {
 //   res.status(404);
