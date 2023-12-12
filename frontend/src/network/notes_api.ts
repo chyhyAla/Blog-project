@@ -101,6 +101,7 @@ export async function createNote(note: NoteInput): Promise<Note> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
+    credentials: "include",
   });
   return handleResponse(response);
 }
