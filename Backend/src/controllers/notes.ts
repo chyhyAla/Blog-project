@@ -9,7 +9,7 @@ export const getAllnotes: RequestHandler = async (req, res, next) => {
 
   try {
     const notes = await NoteModel.find({
-      userId: authenticatedUserName,
+      userName: authenticatedUserName,
     }).exec();
 
     // Send the JSON response

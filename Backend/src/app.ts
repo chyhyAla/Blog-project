@@ -40,6 +40,9 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 60 * 60 * 1000,
+      // secure: false,
+      // sameSite: "strict",
+      // domain: "onrender.com",
     },
     rolling: true,
     store: MongoStore.create({
@@ -56,8 +59,8 @@ app.use(
 app.post("/api/users/signup", UserController.SignUp);
 
 app.post("/api/users/login", UserController.Login);
-app.use("/api/notes", requireAuth, notesRoutes);
 app.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
+app.use("/api/notes", requireAuth, notesRoutes);
 
 app.post("api/users/logout", UserController.Logout);
 
