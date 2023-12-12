@@ -40,9 +40,6 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 60 * 60 * 1000,
-      secure: false,
-      sameSite: "strict",
-      domain: "onrender.com",
     },
     rolling: true,
     store: MongoStore.create({
