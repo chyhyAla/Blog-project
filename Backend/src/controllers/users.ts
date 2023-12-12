@@ -117,7 +117,7 @@ export const Login: RequestHandler<
       throw createHttpError(500, "UserId not set in session");
     }
 
-    console.log("Authenticated User ID from login:", req.session.userName);
+    console.log("Authenticated User name from login:", req.session.userName);
     console.log("Session after login:", req.session);
 
     // Save the session explicitly
