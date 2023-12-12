@@ -77,8 +77,15 @@ export async function logout() {
 export async function fetchNotes(): Promise<Note[]> {
   const response = await fetch(`${baseUrl}/api/notes`, {
     method: "GET",
+    headers: {
+      // Add Content-Type if needed
+    },
     credentials: "include",
   });
+
+  console.log("Response:", response);
+  console.log("Headers:", response.headers);
+
   return handleResponse(response);
 }
 

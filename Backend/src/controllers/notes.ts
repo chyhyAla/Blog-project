@@ -128,7 +128,7 @@ export const updateNote: RequestHandler<
 };
 
 export const deleteNote: RequestHandler = async (req, res, next) => {
-  const noteId = req.params.noteId;
+  const noteId = req.params.noteid;
   const authenticatedUserId = req.session.userId;
 
   try {
