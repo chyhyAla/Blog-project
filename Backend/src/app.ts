@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-// import notesRoutes from "./routes/notes";
+import notesRoutes from "./routes/notes";
 // import usersRoutes from "./routes/users";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
@@ -52,11 +52,11 @@ app.use(
 // app.use("/", express.static(path.join(__dirname, "public")));
 // app.use(cookieParser());
 // app.use("/api/users", usersRoutes);
-// app.use("/api/notes", requireAuth, notesRoutes);
 
 app.post("/api/users/signup", UserController.SignUp);
 
 app.post("/api/users/login", UserController.Login);
+app.use("/api/notes", requireAuth, notesRoutes);
 app.get("/api/users/", requireAuth, UserController.getAuthenticatedUser);
 
 app.post("api/users/logout", UserController.Logout);
